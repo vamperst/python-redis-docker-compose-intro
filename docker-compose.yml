@@ -1,8 +1,24 @@
-version: '3.3'
+version: '3.8'
 services:
   web:
-    image: app-counter
+    image: ACCOUNTID.dkr.ecr.us-east-1.amazonaws.com/app-counter:1.0
     ports:
      - "5000:5000"
+    networks: [ servico ]
+    deploy:
+      placement: 
+        constraints: 
+          - node.role != manager
   redis:
-    image: "redis:alpine"
+    image: "redis"
+    ports:
+      - "6379:6379"
+    networks: [ servico ]
+    deploy:
+      placement: 
+        constraints: 
+          - node.role != manager
+networks:
+  servico:
+    driver: overlay
+    attachable: true
